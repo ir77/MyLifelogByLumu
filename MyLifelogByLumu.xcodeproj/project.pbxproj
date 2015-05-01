@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B16886CD1AF29198007FD6E4 /* Illuminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16886CC1AF29198007FD6E4 /* Illuminance.swift */; };
 		B178A5BC1AE9F3C600A1C877 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B178A5BB1AE9F3C600A1C877 /* AppDelegate.swift */; };
 		B178A5BE1AE9F3C600A1C877 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B178A5BD1AE9F3C600A1C877 /* ViewController.swift */; };
 		B178A5C11AE9F3C600A1C877 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B178A5BF1AE9F3C600A1C877 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 		B1B2A6F01AEA065100532BF3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B2A6EF1AEA065100532BF3 /* AudioToolbox.framework */; };
 		B1B2A6F21AEA067300532BF3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B2A6F11AEA067300532BF3 /* MediaPlayer.framework */; };
 		B1B2A6F41AEA06B700532BF3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B2A6F31AEA06B700532BF3 /* CoreTelephony.framework */; };
+		B1E0C1211AEAA57100B59CC0 /* Illuminance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B1E0C11F1AEAA57100B59CC0 /* Illuminance.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B16886CC1AF29198007FD6E4 /* Illuminance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Illuminance.swift; sourceTree = "<group>"; };
 		B178A5B61AE9F3C600A1C877 /* MyLifelogByLumu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLifelogByLumu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B178A5BA1AE9F3C600A1C877 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B178A5BB1AE9F3C600A1C877 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		B1B2A6EF1AEA065100532BF3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B1B2A6F11AEA067300532BF3 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B1B2A6F31AEA06B700532BF3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		B1E0C1201AEAA57100B59CC0 /* Illuminance.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Illuminance.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 		B178A5AD1AE9F3C600A1C877 = {
 			isa = PBXGroup;
 			children = (
+				B16886CC1AF29198007FD6E4 /* Illuminance.swift */,
 				B178A5B81AE9F3C600A1C877 /* MyLifelogByLumu */,
 				B178A5CE1AE9F3C600A1C877 /* MyLifelogByLumuTests */,
 				B178A5B71AE9F3C600A1C877 /* Products */,
@@ -98,6 +103,7 @@
 				B178A5BF1AE9F3C600A1C877 /* Main.storyboard */,
 				B178A5C21AE9F3C600A1C877 /* Images.xcassets */,
 				B178A5C41AE9F3C600A1C877 /* LaunchScreen.xib */,
+				B1E0C11F1AEAA57100B59CC0 /* Illuminance.xcdatamodeld */,
 				B178A5B91AE9F3C600A1C877 /* Supporting Files */,
 			);
 			path = MyLifelogByLumu;
@@ -234,6 +240,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1E0C1211AEAA57100B59CC0 /* Illuminance.xcdatamodeld in Sources */,
+				B16886CD1AF29198007FD6E4 /* Illuminance.swift in Sources */,
 				B178A5BE1AE9F3C600A1C877 /* ViewController.swift in Sources */,
 				B178A5BC1AE9F3C600A1C877 /* AppDelegate.swift in Sources */,
 			);
@@ -455,6 +463,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B1E0C11F1AEAA57100B59CC0 /* Illuminance.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B1E0C1201AEAA57100B59CC0 /* Illuminance.xcdatamodel */,
+			);
+			currentVersion = B1E0C1201AEAA57100B59CC0 /* Illuminance.xcdatamodel */;
+			path = Illuminance.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B178A5AE1AE9F3C600A1C877 /* Project object */;
 }
