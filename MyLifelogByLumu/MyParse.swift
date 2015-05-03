@@ -28,12 +28,12 @@ class MyParse {
         }
     }
     
-    func saveBrightnessDataInParse (brightnessDict:[Dictionary<String, String>]) {
+    func saveBrightnessDataInParse (brightnessDict: [Dictionary<String, String>]) {
         var objects : [PFObject] = []
         for var i=0; i<brightnessDict.count; i++ {
-            let pfObject : PFObject = PFObject(className: "TestObject")
-            pfObject["brightness"] = brightnessDict[i]["brightness"]
-            pfObject["localtime"] = brightnessDict[i]["localtime"]
+            let pfObject : PFObject = PFObject(className: "LumuObject")
+            pfObject["illuminance"] = brightnessDict[i]["illuminance"]
+            pfObject["timeStamp"] = brightnessDict[i]["timeStamp"]
             objects.append(pfObject)
         }
         PFObject.saveAllInBackground(objects, block: {

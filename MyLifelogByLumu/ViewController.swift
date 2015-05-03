@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, LumuManagerDelegate {
+class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     var dataCounter : Int = 0
+    var parseObject = MyParse()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,10 +20,14 @@ class ViewController: UIViewController, LumuManagerDelegate {
         lm.delegate = self
         lm.startLumuManager()
         dataCounter = 0
+        
+        parseObject.delegate = self
     }
 
     @IBAction func searchButton(sender: AnyObject) {
-        self.searchData()
+        if var data = self.getData() {
+            parseObject.saveBrightnessDataInParse(data)
+        }
     }
     
     @IBAction func deleteButton(sender: AnyObject) {
@@ -33,14 +38,11 @@ class ViewController: UIViewController, LumuManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func getNowDate () -> String {
-        let now = NSDate() // 現在日時の取得
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP") // ロケールの設定
-        dateFormatter.timeStyle = .MediumStyle
-        dateFormatter.dateStyle = .MediumStyle
-        return dateFormatter.stringFromDate(now)
+    // MARK: - Parse
+    func saveBackgroundSuccess() -> Void {
+        self.deleteData()
     }
+    
     
     // MARK: - CoreData
     func insertData(data: NSNumber) {
@@ -59,7 +61,18 @@ class ViewController: UIViewController, LumuManagerDelegate {
         }
     }
     
-    func searchData() {
+    func getNowDate () -> String {
+        let now = NSDate() // 現在日時の取得
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP") // ロケールの設定
+        dateFormatter.timeStyle = .MediumStyle
+        dateFormatter.dateStyle = .MediumStyle
+        return dateFormatter.stringFromDate(now)
+    }
+    
+    func getData() -> [Dictionary<String, String>]?{
+        var illuminanceDict : [Dictionary<String, String>]? = []
+
         // AppDelegateクラスのインスタンスを取得
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // AppDelegateクラスからNSManagedObjectContextを取得
@@ -81,9 +94,13 @@ class ViewController: UIViewController, LumuManagerDelegate {
                 for managedObject in results {
                     let model = managedObject as! Illuminance;
                     println("illuminance: \(model.illuminance), TimeStamp: \(model.timeStamp)");
+                    let tmpDict: Dictionary<String, String> = ["illuminance": "\(model.illuminance)", "timeStamp":"\(model.timeStamp)"]
+                    illuminanceDict!.append(tmpDict)
                 }
             }
         }
+        
+        return illuminanceDict
     }
     
     func deleteData() {
