@@ -10,32 +10,40 @@ import UIKit
 import CoreData
 
 class ViewController: UIViewController, LumuManagerDelegate {
+    var dataCounter : Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         var lm = LumuManager.sharedManager()
         lm.delegate = self
         lm.startLumuManager()
+        dataCounter = 0
     }
 
-    @IBAction func insertButton(sender: AnyObject) {
-        self.insert()
-    }
-    
     @IBAction func searchButton(sender: AnyObject) {
-        self.search()
+        self.searchData()
     }
     
+    @IBAction func deleteButton(sender: AnyObject) {
+        self.deleteData()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - parse
+    func getNowDate () -> String {
+        let now = NSDate() // 現在日時の取得
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP") // ロケールの設定
+        dateFormatter.timeStyle = .MediumStyle
+        dateFormatter.dateStyle = .MediumStyle
+        return dateFormatter.stringFromDate(now)
+    }
     
     // MARK: - CoreData
-    // AppDelegateクラスのインスタンスを取得
-    func insert() {
+    func insertData(data: NSNumber) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // AppDelegateクラスからNSManagedObjectContextを取得
         // ゲッターはプロジェクト作成時に自動生成されている
@@ -45,14 +53,13 @@ class ViewController: UIViewController, LumuManagerDelegate {
             let managedObject: AnyObject = NSEntityDescription.insertNewObjectForEntityForName("Illuminance", inManagedObjectContext: managedObjectContext)
             // エンティティモデルにデータをセット
             let model = managedObject as! Illuminance
-            model.illuminance = 100
-            model.timeStamp = NSDate()
-            
-            // AppDelegateクラスに自動生成された saveContext で保存完了    appDelegate.saveContext()
+            model.illuminance = data
+            model.timeStamp = getNowDate()
+            model.createdAt = NSDate()
         }
     }
     
-    func search() {
+    func searchData() {
         // AppDelegateクラスのインスタンスを取得
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // AppDelegateクラスからNSManagedObjectContextを取得
@@ -65,17 +72,42 @@ class ViewController: UIViewController, LumuManagerDelegate {
             fetchRequest.entity = entityDiscription;
             // NSPredicate SQLのWhere句のようなイメージ
             // someDataBプロパティが100のレコードを指定している
-            let predicate = NSPredicate(format: "%K = %d", "illuminance", 100)
-            fetchRequest.predicate = predicate
+            // let predicate = NSPredicate(format: "%K = %d", "illuminance", 100)
+            // fetchRequest.predicate = predicate
             
             var error: NSError? = nil;
             // フェッチリクエストの実行
             if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
                 for managedObject in results {
                     let model = managedObject as! Illuminance;
-                    println("String: \(model.illuminance), Number: \(model.timeStamp)");
+                    println("illuminance: \(model.illuminance), TimeStamp: \(model.timeStamp)");
                 }
             }
+        }
+    }
+    
+    func deleteData() {
+        /* Get ManagedObjectContext from AppDelegate */
+        let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if let managedObjectContext = appDelegate.managedObjectContext {
+            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+            let fetchRequest = NSFetchRequest();
+            fetchRequest.entity = entityDiscription;
+            
+            var error: NSError? = nil;
+            // フェッチリクエストの実行
+            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
+                for managedObject in results {
+                    let model = managedObject as! Illuminance;
+                    /* Delete managedObject from managed context */
+                    managedObjectContext.deleteObject(model)
+                }
+            }
+            
+            if !managedObjectContext.save(&error) {
+                println("Could not update \(error), \(error!.userInfo)")
+            }
+            println("deleted")
         }
     }
     
@@ -97,7 +129,11 @@ class ViewController: UIViewController, LumuManagerDelegate {
     }
 
     func lumuManagerDidReceiveData(value: CGFloat) {
-        NSLog("lumu Manager Did ReceiveData %f", value);
+        dataCounter++
+        if dataCounter > 19 {
+            dataCounter = 0
+            self.insertData(value)
+        }
     }
 
     func lumuManagerDidStopLumu() {

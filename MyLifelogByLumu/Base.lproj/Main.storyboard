@@ -17,7 +17,8 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-fz-fNr">
-                                <rect key="frame" x="137" y="410" width="46" height="30"/>
+                                <rect key="frame" x="16" y="342" width="288" height="98"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="search">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -25,13 +26,14 @@
                                     <action selector="searchButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="SUw-2q-UXm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU9-xM-Fxg">
-                                <rect key="frame" x="137" y="296" width="38" height="30"/>
-                                <state key="normal" title="insert">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNw-nR-eHT">
+                                <rect key="frame" x="16" y="152" width="288" height="110"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="delete">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="insertButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fcL-uV-9kC"/>
+                                    <action selector="deleteButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="NzS-0z-jVk"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -41,7 +43,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="327" y="89"/>
+            <point key="canvasLocation" x="158" y="100"/>
         </scene>
     </scenes>
 </document>

@@ -2,7 +2,7 @@
 //  Illuminance.swift
 //  MyLifelogByLumu
 //
-//  Created by ucuc on 5/1/15.
+//  Created by ucuc on 5/3/15.
 //  Copyright (c) 2015 ucuc. All rights reserved.
 //
 
@@ -13,6 +13,7 @@ import CoreData
 class Illuminance: NSManagedObject {
 
     @NSManaged var illuminance: NSNumber
-    @NSManaged var timeStamp: NSDate
+    @NSManaged var timeStamp: String
+    @NSManaged var createdAt: NSDate
 
 }
