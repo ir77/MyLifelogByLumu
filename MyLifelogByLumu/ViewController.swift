@@ -30,6 +30,9 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     }
 
     @IBAction func searchButton(sender: AnyObject) {
+        // TODO: getData()の量を制限
+        // 段階的にアップロードする
+        self.getData()
         if var data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
         }
@@ -95,9 +98,11 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             // someDataBプロパティが100のレコードを指定している
             // let predicate = NSPredicate(format: "%K = %d", "illuminance", 100)
             // fetchRequest.predicate = predicate
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
             
             var error: NSError? = nil;
             // フェッチリクエストの実行
+            println("------------------------")
             if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
                 for managedObject in results {
                     let model = managedObject as! Illuminance;
@@ -134,6 +139,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
                 successLabel.text = "Delete Failed"
             }
             println("deleted")
+            dataCount.text = "\(countData())"
         }
     }
     
