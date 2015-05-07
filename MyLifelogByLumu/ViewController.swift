@@ -176,10 +176,10 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     }
 
     func lumuManagerDidReceiveData(value: CGFloat) {
-        illLabel.text = "\(value)"
+        illLabel.text = String(format: "%.01f", Float(value))
         tmpDataCounter++
         
-        if tmpDataCounter > 9 {
+        if tmpDataCounter > 19 {
             tmpDataCounter = 0
             self.insertData(value)
         }
