@@ -10,6 +10,7 @@ import Parse
 
 protocol MyParseDelegate {
     func saveBackgroundSuccess() -> Void
+    func saveBackgroundFail() -> Void
 }
 
 class MyParse {

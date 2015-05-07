@@ -10,8 +10,13 @@ import UIKit
 import CoreData
 
 class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
-    var dataCounter : Int = 0
+    var tmpDataCounter : Int = 0
+    var dataCounter: Int = 0
     var parseObject = MyParse()
+    @IBOutlet weak var illLabel: UILabel!
+    @IBOutlet weak var successLabel: UILabel!
+    @IBOutlet weak var lumuStatus: UILabel!
+    @IBOutlet weak var dataCount: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +24,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         var lm = LumuManager.sharedManager()
         lm.delegate = self
         lm.startLumuManager()
-        dataCounter = 0
+        tmpDataCounter = 0
         
         parseObject.delegate = self
     }
@@ -30,9 +35,6 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         }
     }
     
-    @IBAction func deleteButton(sender: AnyObject) {
-        self.deleteData()
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -40,7 +42,12 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     
     // MARK: - Parse
     func saveBackgroundSuccess() -> Void {
+        successLabel.text = getNowDate()
         self.deleteData()
+    }
+    
+    func saveBackgroundFail() -> Void {
+        successLabel.text = "Send Failed"
     }
     
     
@@ -58,6 +65,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             model.illuminance = data
             model.timeStamp = getNowDate()
             model.createdAt = NSDate()
+            dataCount.text = "\(dataCount.text!.toInt()! + 1)"
         }
     }
     
@@ -123,22 +131,44 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             
             if !managedObjectContext.save(&error) {
                 println("Could not update \(error), \(error!.userInfo)")
+                successLabel.text = "Delete Failed"
             }
             println("deleted")
         }
     }
     
+    func countData() -> Int {
+        /* Get ManagedObjectContext from AppDelegate */
+        let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if let managedObjectContext = appDelegate.managedObjectContext {
+            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+            let fetchRequest = NSFetchRequest();
+            fetchRequest.entity = entityDiscription;
+            
+            var error: NSError? = nil;
+            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
+                return results.count
+            }
+        }
+        return -1
+    }
+
+    
     // MARK: - lumu
     func lumuManagerDidStartLumu() {
         NSLog("Start");
+        lumuStatus.text = "Start"
+        dataCount.text = "\(countData())"
     }
     
     func lumuManagerDidRecognizeLumu() {
         NSLog("Recognized");
+        lumuStatus.text = "OK"
     }
     
     func lumuManagerDidNotRecognizeLumu() {
         NSLog("Not recognized");
+        lumuStatus.text = "NG"
     }
     
     func lumuManagerDidNotGetRecordPermission() {
@@ -146,15 +176,18 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     }
 
     func lumuManagerDidReceiveData(value: CGFloat) {
-        dataCounter++
-        if dataCounter > 19 {
-            dataCounter = 0
+        illLabel.text = "\(value)"
+        tmpDataCounter++
+        
+        if tmpDataCounter > 9 {
+            tmpDataCounter = 0
             self.insertData(value)
         }
     }
 
     func lumuManagerDidStopLumu() {
         NSLog("lumu Manager Did Stop Lumu");
+        lumuStatus.text = "Stop"
     }
 }
 
