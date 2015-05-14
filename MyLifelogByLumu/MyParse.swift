@@ -30,6 +30,7 @@ class MyParse {
     }
     
     func saveBrightnessDataInParse (brightnessDict: [Dictionary<String, String>]) {
+        SVProgressHUD.show()
         var objects : [PFObject] = []
         for var i=0; i<brightnessDict.count; i++ {
             let pfObject : PFObject = PFObject(className: "LumuObject")
@@ -43,11 +44,13 @@ class MyParse {
                 // The object has been saved.
                 println("success")
                 self.delegate.saveBackgroundSuccess()
+                SVProgressHUD.dismiss()
             } else {
                 // There was a problem, check error.description
                 println(error?.description)
+                SVProgressHUD.showErrorWithStatus("失敗!")
             }
-        })        
+        })
     }
     
     func saveErrorData (brightness:CGFloat) {
