@@ -38,6 +38,9 @@
 		B1B921621AF4BBFD0035E6BB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1B921611AF4BBFD0035E6BB /* CFNetwork.framework */; };
 		B1C2169A1AF5DD8F00BFBD9A /* Illuminance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C216991AF5DD8F00BFBD9A /* Illuminance.swift */; };
 		B1E0C1211AEAA57100B59CC0 /* Illuminance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B1E0C11F1AEAA57100B59CC0 /* Illuminance.xcdatamodeld */; };
+		B1F0AF421B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F0AF3D1B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.m */; };
+		B1F0AF431B04DB4A00ECAEC6 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B1F0AF3F1B04DB4A00ECAEC6 /* SVProgressHUD.bundle */; };
+		B1F0AF441B04DB4A00ECAEC6 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F0AF411B04DB4A00ECAEC6 /* SVProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +90,12 @@
 		B1B921611AF4BBFD0035E6BB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		B1C216991AF5DD8F00BFBD9A /* Illuminance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Illuminance.swift; sourceTree = "<group>"; };
 		B1E0C1201AEAA57100B59CC0 /* Illuminance.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Illuminance.xcdatamodel; sourceTree = "<group>"; };
+		B1F0AF3C1B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
+		B1F0AF3D1B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
+		B1F0AF3E1B04DB4A00ECAEC6 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		B1F0AF3F1B04DB4A00ECAEC6 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		B1F0AF401B04DB4A00ECAEC6 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		B1F0AF411B04DB4A00ECAEC6 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +172,7 @@
 		B178A5B91AE9F3C600A1C877 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B1F0AF3B1B04DB4A00ECAEC6 /* SVProgressHUD */,
 				B1B921651AF4BC470035E6BB /* CoreData */,
 				B1B921631AF4BC190035E6BB /* Lumu */,
 				B1B921641AF4BC250035E6BB /* Parse */,
@@ -240,6 +250,19 @@
 				B1C216991AF5DD8F00BFBD9A /* Illuminance.swift */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		B1F0AF3B1B04DB4A00ECAEC6 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				B1F0AF3C1B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.h */,
+				B1F0AF3D1B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.m */,
+				B1F0AF3E1B04DB4A00ECAEC6 /* SVProgressHUD-Prefix.pch */,
+				B1F0AF3F1B04DB4A00ECAEC6 /* SVProgressHUD.bundle */,
+				B1F0AF401B04DB4A00ECAEC6 /* SVProgressHUD.h */,
+				B1F0AF411B04DB4A00ECAEC6 /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +346,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1F0AF431B04DB4A00ECAEC6 /* SVProgressHUD.bundle in Resources */,
 				B178A5C11AE9F3C600A1C877 /* Main.storyboard in Resources */,
 				B178A5C61AE9F3C600A1C877 /* LaunchScreen.xib in Resources */,
 				B1B921411AF4BB2D0035E6BB /* private.plist in Resources */,
@@ -347,8 +371,10 @@
 				B1C2169A1AF5DD8F00BFBD9A /* Illuminance.swift in Sources */,
 				B1E0C1211AEAA57100B59CC0 /* Illuminance.xcdatamodeld in Sources */,
 				B178A5BE1AE9F3C600A1C877 /* ViewController.swift in Sources */,
+				B1F0AF441B04DB4A00ECAEC6 /* SVProgressHUD.m in Sources */,
 				B1B9213F1AF4BB0A0035E6BB /* MyParse.swift in Sources */,
 				B178A5BC1AE9F3C600A1C877 /* AppDelegate.swift in Sources */,
+				B1F0AF421B04DB4A00ECAEC6 /* SVIndefiniteAnimatedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

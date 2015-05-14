@@ -11,5 +11,6 @@
 
 #import <Lumu/Lumu.h>
 #import <Lumu/LumuManager.h>
+#import "SVProgressHUD.h"
 
 #endif
