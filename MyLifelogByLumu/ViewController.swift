@@ -28,10 +28,14 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         
         parseObject.delegate = self
     }
+    
+    
+    @IBAction func deleteButton(sender: AnyObject) {
+        self.deleteAllData()
+    }
 
-    @IBAction func searchButton(sender: AnyObject) {
-        // TODO: getData()の量を制限
-        // 段階的にアップロードする
+    @IBAction func sendButton(sender: AnyObject) {
+        // TODO: 段階的にアップロードする
         self.getData()
         if var data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
@@ -94,11 +98,8 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             // NSFetchRequest SQLのSelect文のようなイメージ
             let fetchRequest = NSFetchRequest();
             fetchRequest.entity = entityDiscription;
-            // NSPredicate SQLのWhere句のようなイメージ
-            // someDataBプロパティが100のレコードを指定している
-            // let predicate = NSPredicate(format: "%K = %d", "illuminance", 100)
-            // fetchRequest.predicate = predicate
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+            fetchRequest.fetchLimit = 1000
             
             var error: NSError? = nil;
             // フェッチリクエストの実行
@@ -115,6 +116,35 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         
         return illuminanceDict
     }
+
+    func deleteAllData() {
+        /* Get ManagedObjectContext from AppDelegate */
+        let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if let managedObjectContext = appDelegate.managedObjectContext {
+            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+            let fetchRequest = NSFetchRequest();
+            fetchRequest.entity = entityDiscription;
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+            
+            var error: NSError? = nil;
+            // フェッチリクエストの実行
+            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
+                for managedObject in results {
+                    let model = managedObject as! Illuminance;
+                    /* Delete managedObject from managed context */
+                    managedObjectContext.deleteObject(model)
+                }
+            }
+            
+            if !managedObjectContext.save(&error) {
+                println("Could not update \(error), \(error!.userInfo)")
+                successLabel.text = "Delete Failed"
+            }
+            println("deleted")
+            dataCount.text = "\(countData())"
+        }
+    }
+
     
     func deleteData() {
         /* Get ManagedObjectContext from AppDelegate */
@@ -123,6 +153,8 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
             let fetchRequest = NSFetchRequest();
             fetchRequest.entity = entityDiscription;
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+            fetchRequest.fetchLimit = 1000
             
             var error: NSError? = nil;
             // フェッチリクエストの実行
@@ -185,7 +217,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         illLabel.text = String(format: "%.01f", Float(value))
         tmpDataCounter++
         
-        if tmpDataCounter > 19 {
+        if tmpDataCounter > 9 {
             tmpDataCounter = 0
             self.insertData(value)
         }
