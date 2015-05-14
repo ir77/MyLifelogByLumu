@@ -35,7 +35,15 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     }
 
     @IBAction func sendButton(sender: AnyObject) {
-        // TODO: 段階的にアップロードする
+        SVProgressHUD.dismiss()
+        self.getData()
+        if var data = self.getData() {
+            parseObject.saveBrightnessDataInParse(data)
+        }
+    }
+    
+    func update() {
+        SVProgressHUD.dismiss()
         self.getData()
         if var data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
@@ -51,6 +59,10 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     func saveBackgroundSuccess() -> Void {
         successLabel.text = getNowDate()
         self.deleteData()
+        if countData() > 100 {
+            SVProgressHUD.show()
+            var timer = NSTimer.scheduledTimerWithTimeInterval(300.0, target: self, selector: Selector("update"), userInfo: nil, repeats: false)
+        }
     }
     
     func saveBackgroundFail() -> Void {
@@ -117,7 +129,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         return illuminanceDict
     }
 
-    func deleteAllData() {
+    func deleteData() {
         /* Get ManagedObjectContext from AppDelegate */
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if let managedObjectContext = appDelegate.managedObjectContext {
@@ -125,6 +137,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             let fetchRequest = NSFetchRequest();
             fetchRequest.entity = entityDiscription;
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+            fetchRequest.fetchLimit = 1000
             
             var error: NSError? = nil;
             // フェッチリクエストの実行
@@ -144,9 +157,8 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             dataCount.text = "\(countData())"
         }
     }
-
     
-    func deleteData() {
+    func deleteAllData() {
         /* Get ManagedObjectContext from AppDelegate */
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if let managedObjectContext = appDelegate.managedObjectContext {
@@ -154,7 +166,6 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
             let fetchRequest = NSFetchRequest();
             fetchRequest.entity = entityDiscription;
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-            fetchRequest.fetchLimit = 1000
             
             var error: NSError? = nil;
             // フェッチリクエストの実行

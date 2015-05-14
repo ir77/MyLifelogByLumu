@@ -43,8 +43,8 @@ class MyParse {
             if (success) {
                 // The object has been saved.
                 println("success")
-                self.delegate.saveBackgroundSuccess()
                 SVProgressHUD.dismiss()
+                self.delegate.saveBackgroundSuccess()
             } else {
                 // There was a problem, check error.description
                 println(error?.description)
