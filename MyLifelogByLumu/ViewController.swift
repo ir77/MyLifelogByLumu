@@ -17,6 +17,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     @IBOutlet weak var successLabel: UILabel!
     @IBOutlet weak var lumuStatus: UILabel!
     @IBOutlet weak var dataCount: UILabel!
+    @IBOutlet weak var sendButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,19 +37,21 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
 
     @IBAction func sendButton(sender: AnyObject) {
         SVProgressHUD.dismiss()
+        self.sendButton.enabled = false
         self.getData()
         if var data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
         }
     }
     
+    /*
     func update() {
         SVProgressHUD.dismiss()
         self.getData()
         if var data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
         }
-    }
+    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -59,14 +62,17 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     func saveBackgroundSuccess() -> Void {
         successLabel.text = getNowDate()
         self.deleteData()
+        self.sendButton.enabled = true
+        /*
         if countData() > 100 {
             SVProgressHUD.show()
             var timer = NSTimer.scheduledTimerWithTimeInterval(300.0, target: self, selector: Selector("update"), userInfo: nil, repeats: false)
-        }
+        }*/
     }
     
     func saveBackgroundFail() -> Void {
         successLabel.text = "Send Failed"
+        self.sendButton.enabled = true
     }
     
     

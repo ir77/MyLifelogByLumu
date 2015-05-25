@@ -49,6 +49,7 @@ class MyParse {
                 // There was a problem, check error.description
                 println(error?.description)
                 SVProgressHUD.showErrorWithStatus("失敗!")
+                self.delegate.saveBackgroundFail()
             }
         })
     }
