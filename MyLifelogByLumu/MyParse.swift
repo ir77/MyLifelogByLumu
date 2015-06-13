@@ -42,12 +42,12 @@ class MyParse {
             (success, error) -> Void in
             if (success) {
                 // The object has been saved.
-                println("success")
+                print("success")
                 SVProgressHUD.dismiss()
                 self.delegate.saveBackgroundSuccess()
             } else {
                 // There was a problem, check error.description
-                println(error?.description)
+                print(error?.description)
                 SVProgressHUD.showErrorWithStatus("失敗!")
                 self.delegate.saveBackgroundFail()
             }
@@ -55,7 +55,7 @@ class MyParse {
     }
     
     func saveErrorData (brightness:CGFloat) {
-        var data = PFObject(className:"error")
+        let data = PFObject(className:"error")
         if (brightness > 1.0) {
             data["error"] = true
         }
@@ -66,7 +66,7 @@ class MyParse {
         data.saveInBackgroundWithBlock {
             (success, error) -> Void in
             if (success) {
-                println("success error save")
+                print("success error save")
             }
         }
     }

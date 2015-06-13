@@ -22,14 +22,13 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        var lm = LumuManager.sharedManager()
+        let lm = LumuManager.sharedManager()
         lm.delegate = self
         lm.startLumuManager()
         tmpDataCounter = 0
         
         parseObject.delegate = self
     }
-    
     
     @IBAction func deleteButton(sender: AnyObject) {
         self.deleteAllData()
@@ -39,7 +38,7 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         SVProgressHUD.dismiss()
         self.sendButton.enabled = false
         self.getData()
-        if var data = self.getData() {
+        if let data = self.getData() {
             parseObject.saveBrightnessDataInParse(data)
         }
     }
@@ -81,17 +80,16 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // AppDelegateクラスからNSManagedObjectContextを取得
         // ゲッターはプロジェクト作成時に自動生成されている
-        if let managedObjectContext = appDelegate.managedObjectContext {
-            // NSEntityDescriptionから新しいエンティティモデルのインスタンスを取得
-            // 第一引数はモデルクラスの名前、第二引数はNSManagedObjectContext
-            let managedObject: AnyObject = NSEntityDescription.insertNewObjectForEntityForName("Illuminance", inManagedObjectContext: managedObjectContext)
-            // エンティティモデルにデータをセット
-            let model = managedObject as! Illuminance
-            model.illuminance = data
-            model.timeStamp = getNowDate()
-            model.createdAt = NSDate()
-            dataCount.text = "\(dataCount.text!.toInt()! + 1)"
-        }
+        let managedObjectContext = appDelegate.managedObjectContext
+        // NSEntityDescriptionから新しいエンティティモデルのインスタンスを取得
+        // 第一引数はモデルクラスの名前、第二引数はNSManagedObjectContext
+        let managedObject: AnyObject = NSEntityDescription.insertNewObjectForEntityForName("Illuminance", inManagedObjectContext: managedObjectContext)
+        // エンティティモデルにデータをセット
+        let model = managedObject as! Illuminance
+        model.illuminance = data
+        model.timeStamp = getNowDate()
+        model.createdAt = NSDate()
+        dataCount.text = "\(Int(dataCount.text!)! + 1)"
     }
     
     func getNowDate () -> String {
@@ -110,102 +108,99 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         // AppDelegateクラスからNSManagedObjectContextを取得
         // ゲッターはプロジェクト作成時に自動生成されている
-        if let managedObjectContext = appDelegate.managedObjectContext {
-            // EntityDescriptionのインスタンスを生成
-            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
-            // NSFetchRequest SQLのSelect文のようなイメージ
-            let fetchRequest = NSFetchRequest();
-            fetchRequest.entity = entityDiscription;
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-            fetchRequest.fetchLimit = 1000
-            
-            var error: NSError? = nil;
-            // フェッチリクエストの実行
-            println("------------------------")
-            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
-                for managedObject in results {
-                    let model = managedObject as! Illuminance;
-                    println("illuminance: \(model.illuminance), TimeStamp: \(model.timeStamp)");
-                    let tmpDict: Dictionary<String, String> = ["illuminance": "\(model.illuminance)", "timeStamp":"\(model.timeStamp)"]
-                    illuminanceDict!.append(tmpDict)
-                }
+        let managedObjectContext = appDelegate.managedObjectContext
+        // EntityDescriptionのインスタンスを生成
+        let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+        // NSFetchRequest SQLのSelect文のようなイメージ
+        let fetchRequest = NSFetchRequest();
+        fetchRequest.entity = entityDiscription;
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        fetchRequest.fetchLimit = 1000
+        
+        // フェッチリクエストの実行
+        print("------------------------")
+        do {
+            let results = try! managedObjectContext.executeFetchRequest(fetchRequest)
+            for managedObject in results {
+                let model = managedObject as! Illuminance;
+                print("illuminance: \(model.illuminance), TimeStamp: \(model.timeStamp)");
+                let tmpDict: Dictionary<String, String> = ["illuminance": "\(model.illuminance)", "timeStamp":"\(model.timeStamp)"]
+                illuminanceDict!.append(tmpDict)
             }
         }
-        
+
         return illuminanceDict
     }
 
     func deleteData() {
         /* Get ManagedObjectContext from AppDelegate */
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let managedObjectContext = appDelegate.managedObjectContext {
-            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
-            let fetchRequest = NSFetchRequest();
-            fetchRequest.entity = entityDiscription;
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-            fetchRequest.fetchLimit = 1000
-            
-            var error: NSError? = nil;
-            // フェッチリクエストの実行
-            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
-                for managedObject in results {
-                    let model = managedObject as! Illuminance;
-                    /* Delete managedObject from managed context */
-                    managedObjectContext.deleteObject(model)
-                }
+        let managedObjectContext = appDelegate.managedObjectContext
+        let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+        let fetchRequest = NSFetchRequest();
+        fetchRequest.entity = entityDiscription;
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        fetchRequest.fetchLimit = 1000
+        
+        // フェッチリクエストの実行
+        do {
+            let results = try! managedObjectContext.executeFetchRequest(fetchRequest)
+            for managedObject in results {
+                let model = managedObject as! Illuminance;
+                /* Delete managedObject from managed context */
+                managedObjectContext.deleteObject(model)
             }
-            
-            if !managedObjectContext.save(&error) {
-                println("Could not update \(error), \(error!.userInfo)")
-                successLabel.text = "Delete Failed"
-            }
-            println("deleted")
-            dataCount.text = "\(countData())"
         }
+        
+        do {
+            try managedObjectContext.save()
+        } catch {
+            successLabel.text = "Delete Failed"
+        }
+        print("deleted")
+        dataCount.text = "\(countData())"
     }
     
     func deleteAllData() {
         /* Get ManagedObjectContext from AppDelegate */
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let managedObjectContext = appDelegate.managedObjectContext {
-            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
-            let fetchRequest = NSFetchRequest();
-            fetchRequest.entity = entityDiscription;
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-            
-            var error: NSError? = nil;
-            // フェッチリクエストの実行
-            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
-                for managedObject in results {
-                    let model = managedObject as! Illuminance;
-                    /* Delete managedObject from managed context */
-                    managedObjectContext.deleteObject(model)
-                }
+        let managedObjectContext = appDelegate.managedObjectContext
+        let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+        let fetchRequest = NSFetchRequest();
+        fetchRequest.entity = entityDiscription;
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
+        
+        // フェッチリクエストの実行
+        do {
+            let results = try! managedObjectContext.executeFetchRequest(fetchRequest)
+            for managedObject in results {
+                let model = managedObject as! Illuminance;
+                /* Delete managedObject from managed context */
+                managedObjectContext.deleteObject(model)
             }
-            
-            if !managedObjectContext.save(&error) {
-                println("Could not update \(error), \(error!.userInfo)")
-                successLabel.text = "Delete Failed"
-            }
-            println("deleted")
-            dataCount.text = "\(countData())"
         }
+        
+        do {
+            try managedObjectContext.save()
+        } catch {
+            successLabel.text = "Delete Failed"
+        }
+        print("deleted")
+        dataCount.text = "\(countData())"
     }
     
     func countData() -> Int {
         /* Get ManagedObjectContext from AppDelegate */
         let appDelegate: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let managedObjectContext = appDelegate.managedObjectContext {
-            let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
-            let fetchRequest = NSFetchRequest();
-            fetchRequest.entity = entityDiscription;
-            
-            var error: NSError? = nil;
-            if var results = managedObjectContext.executeFetchRequest(fetchRequest, error: &error) {
-                return results.count
-            }
+        let managedObjectContext = appDelegate.managedObjectContext
+        let entityDiscription = NSEntityDescription.entityForName("Illuminance", inManagedObjectContext: managedObjectContext);
+        let fetchRequest = NSFetchRequest();
+        fetchRequest.entity = entityDiscription;
+        
+        do {
+            let results = try! managedObjectContext.executeFetchRequest(fetchRequest)
+            return results.count
         }
-        return -1
     }
 
     
@@ -245,4 +240,3 @@ class ViewController: UIViewController, LumuManagerDelegate, MyParseDelegate {
         lumuStatus.text = "Stop"
     }
 }
-
